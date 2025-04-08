@@ -81,5 +81,16 @@ namespace CareLink_Refugee.Mappers
                 Refugees = accomodation.Refugees.Select(r => r.ToDto()).ToList(),
             };
         }
+        public static Shelter ToModel(this CreateAccomodationRequestDto dto)
+        {
+            return new Shelter
+            {
+                Id = Guid.NewGuid(),
+                Name = dto.Name,
+                Location = dto.Location,
+                Capacity = dto.Capacity,
+                CurrentOccupancy = dto.CurrentOccupancy
+            };
+        }
     }
 }

@@ -1,0 +1,46 @@
+﻿version: '3.8'
+
+services:
+  app:
+    image: carelink-refugee-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5169:5169"
+      - "7196:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=cl
+      - DB_USER=admin
+      - DB_PASSWORD=adminpassword
+      - HOST=http://0.0.0.0
+      - PORT=5169
+    depends_on:
+      - db
+    networks:
+      - carelink_network
+
+  db:
+    image: postgres:13
+    container_name: carelink_refugee_db
+    environment:
+      POSTGRES_DB: cl
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: adminpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - carelink_network
+
+networks:
+  carelink_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local

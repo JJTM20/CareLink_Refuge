@@ -215,5 +215,41 @@ namespace CareLink_Refugee.Controllers
             var familyDto = family.ToDto();
             return Ok(familyDto);
         }
+
+        [HttpPost("AddAccomodation")]
+        [ProducesResponseType(typeof(AccomodationResponseDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AddAccomodation([FromBody] CreateAccomodationRequestDto dto)
+        {
+            var accomodation = RefugeeMapper.ToModel(dto);
+            if (accomodation == null)
+            {
+                return BadRequest("Accomodation cannot be null");
+            }
+            _logger.LogInformation("Adding accomodation: {@accomodation}", accomodation);
+            _context.Shelters.Add(accomodation);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetAllAccomodations), new { id = accomodation.Id }, accomodation.ToDto());
+        }
+
+        [HttpPut("AddRefugeeToAccomodation")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> AddRefugeeToAccomodation([FromBody] AddRefugeeToAccomodationDto dto)
+        {
+            var accomodation = await _context.Shelters.FindAsync(dto.AccomodationId);
+            if (accomodation == null)
+            {
+                return NotFound("Accomodation not found.");
+            }
+            var refugee = await _context.Refugees.FindAsync(dto.RefugeeId);
+            if (refugee == null)
+            {
+                return NotFound("Refugee not found");
+            }
+            accomodation.Refugees.Add(refugee);
+            await _context.SaveChangesAsync();
+            return Ok($"Refugee with id [{refugee.Id}] added to accomodation with id [{accomodation.Id}]");
+        }
     }
 }
