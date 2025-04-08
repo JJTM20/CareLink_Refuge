@@ -53,7 +53,6 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseAuthorization();
-app.UseHttpsRedirection();
 
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 

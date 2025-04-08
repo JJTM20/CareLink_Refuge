@@ -3,6 +3,7 @@ using CareLink_Refugee.DTOs;
 
 namespace CareLink_Refugee.Mappers
 {
+    // This should be delegated to separate mappers, but this is sufficient since there is relatively few classes
     public static class RefugeeMapper
     {
         public static Refugee ToModel(this CreateRefugeeRequestDto dto)
@@ -69,6 +70,14 @@ namespace CareLink_Refugee.Mappers
                 Members = family.Members.Select(m => m.ToDto()).ToList(),
             };
         }
+        public static Family ToModel(this CreateFamilyRequestDto dto)
+        {
+            return new Family
+            {
+                Id = Guid.NewGuid(),
+                FamilyName = dto.FamilyName
+            };
+        }
         public static AccomodationResponseDto ToDto(this Shelter accomodation)
         {
             return new AccomodationResponseDto
@@ -77,8 +86,7 @@ namespace CareLink_Refugee.Mappers
                 Name = accomodation.Name,
                 Location = accomodation.Location,
                 Capacity = accomodation.Capacity,
-                CurrentOccupancy = accomodation.CurrentOccupancy,
-                Refugees = accomodation.Refugees.Select(r => r.ToDto()).ToList(),
+                CurrentOccupancy = accomodation.CurrentOccupancy
             };
         }
         public static Shelter ToModel(this CreateAccomodationRequestDto dto)

@@ -3,11 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CareLink_Refugee.DTOs
 {
-    public class CreateFamilyRequestDto
+    public class CreateFamilyResponseDto
     {
+        public Guid Id { get; set; }
+
         [Required]
         public string FamilyName { get; set; }
 
-        public ICollection<Guid>? Members { get; set; }
+        [Required]
+        public ICollection<Refugee> Members { get; set; }
     }
 }
