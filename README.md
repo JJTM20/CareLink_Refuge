@@ -10,7 +10,7 @@ Click this:
 
 or
 
-run ```dotnet run``` in root directory (CareLink_Refugee)
+Run ```dotnet run``` in root directory (CareLink_Refugee)
 
 Go to:
 http://localhost:5169/
