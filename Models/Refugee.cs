@@ -3,12 +3,6 @@ using System.Text.Json.Serialization;
 
 namespace CareLink_Refugee.Models
 {
-    public enum Gender
-    {
-        Male = 0,
-        Female = 1,
-        NonBinary = 2,
-    }
     public class Refugee
     {
         // Empty constructor is required for EF Core to work properly:)
@@ -36,14 +30,14 @@ namespace CareLink_Refugee.Models
             FamilyId=familyId;
         }
 
-        public Guid Id { get; set; } // Unique identifier
+        public Guid Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public string Gender { get; set; } // Could also be an enum
+        public string Gender { get; set; }
         public string Nationality { get; set; }
-        public Guid? AccomodationId { get; set; } // foreign key for the shelter
-        public Shelter Accomodation { get; set; } // e.g., camp name, city, or address
+        public Guid? AccomodationId { get; set; }
+        public Shelter Accomodation { get; set; }
         public DateTime DateOfArrival { get; set; } // When they arrived at the current location
         public string Status { get; set; }
         public ICollection<string> LanguagesSpoken { get; set; }

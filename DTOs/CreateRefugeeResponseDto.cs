@@ -15,7 +15,7 @@ namespace CareLink_Refugee.DTOs
 
         public string Nationality { get; set; }
 
-        public Guid? AccomodationId { get; set; } // just the foreign key
+        public Guid? AccomodationId { get; set; }
 
         public DateTime DateOfArrival { get; set; }
 
