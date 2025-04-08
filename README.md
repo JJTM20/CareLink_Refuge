@@ -8,6 +8,8 @@ Click this:
 
 ![image](https://github.com/user-attachments/assets/61df64d0-0ccf-49fd-bed3-d32aa9011209)
 
+Go to:
+http://localhost:5169/
 ## Dockerized
 Run ```docker-compose up -d --build``` in root directory (CareLink_Refugee)
 
