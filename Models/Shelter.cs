@@ -13,11 +13,11 @@
             Capacity = capacity;
             CurrentOccupancy = currentOccupancy;
         }
-        public Guid Id { get; set; } // Unique identifier
-        public string Name { get; set; } // Name of the shelter
-        public string Location { get; set; } // Location of the shelter
-        public int Capacity { get; set; } // Maximum capacity of the shelter
-        public int CurrentOccupancy { get; set; } // Current number of refugees in the shelter
+        public Guid Id { get; set; } 
+        public string Name { get; set; }
+        public string Location { get; set; } 
+        public int Capacity { get; set; } 
+        public int CurrentOccupancy { get; set; } 
 
         public ICollection<Refugee> Refugees { get; set; }
     }

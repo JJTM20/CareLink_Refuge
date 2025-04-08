@@ -12,6 +12,18 @@ namespace CareLink_Refugee.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Families",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    FamilyName = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Families", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Shelters",
                 columns: table => new
                 {
@@ -43,11 +55,17 @@ namespace CareLink_Refugee.Migrations
                     MedicalConditions = table.Column<string[]>(type: "text[]", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    FamilyId = table.Column<int>(type: "integer", nullable: false)
+                    FamilyId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Refugees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Refugees_Families_FamilyId",
+                        column: x => x.FamilyId,
+                        principalTable: "Families",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Refugees_Shelters_AccomodationId",
                         column: x => x.AccomodationId,
@@ -60,6 +78,11 @@ namespace CareLink_Refugee.Migrations
                 name: "IX_Refugees_AccomodationId",
                 table: "Refugees",
                 column: "AccomodationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Refugees_FamilyId",
+                table: "Refugees",
+                column: "FamilyId");
         }
 
         /// <inheritdoc />
@@ -67,6 +90,9 @@ namespace CareLink_Refugee.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Refugees");
+
+            migrationBuilder.DropTable(
+                name: "Families");
 
             migrationBuilder.DropTable(
                 name: "Shelters");

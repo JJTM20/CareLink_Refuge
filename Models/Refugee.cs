@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace CareLink_Refugee.Models
 {
@@ -16,8 +17,8 @@ namespace CareLink_Refugee.Models
             MedicalConditions = new List<string>();
         }
         public Refugee(Guid id, string firstName, string lastName, DateTime dateOfBirth, string gender, string nationality, 
-            Shelter accomodation, DateTime dateOfArrival, string status,
-            ICollection<string> languagesSpoken, ICollection<string> medicalConditions, DateTime createdAt, DateTime updatedAt, int familyId)
+            Shelter? accomodation, DateTime dateOfArrival, string status,
+            ICollection<string> languagesSpoken, ICollection<string> medicalConditions, DateTime createdAt, DateTime updatedAt, Guid? familyId)
         {
             Id=id;
             FirstName=firstName;
@@ -41,7 +42,7 @@ namespace CareLink_Refugee.Models
         public DateTime DateOfBirth { get; set; }
         public string Gender { get; set; } // Could also be an enum
         public string Nationality { get; set; }
-        public Guid AccomodationId { get; set; } // foreign key for the shelter
+        public Guid? AccomodationId { get; set; } // foreign key for the shelter
         public Shelter Accomodation { get; set; } // e.g., camp name, city, or address
         public DateTime DateOfArrival { get; set; } // When they arrived at the current location
         public string Status { get; set; }
@@ -49,7 +50,9 @@ namespace CareLink_Refugee.Models
         public ICollection<string> MedicalConditions { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public int FamilyId { get; set; }
+        public Guid? FamilyId { get; set; }
+        [JsonIgnore]
+        public Family? Family { get; set; } // Navigation property for the family
     }
 
 }

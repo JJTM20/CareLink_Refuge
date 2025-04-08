@@ -11,6 +11,7 @@ namespace CareLink_Refugee.Persistence
 
         public DbSet<Refugee> Refugees { get; set; }
         public DbSet<Shelter> Shelters { get; set; }
+        public DbSet<Family> Families { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -19,6 +20,12 @@ namespace CareLink_Refugee.Persistence
             .WithMany(s => s.Refugees)
             .HasForeignKey(r => r.AccomodationId)
             .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Refugee>()
+            .HasOne(r => r.Family)
+            .WithMany(s => s.Members)
+            .HasForeignKey(r => r.FamilyId)
+            .OnDelete(DeleteBehavior.SetNull);
 
             base.OnModelCreating(modelBuilder);
         }

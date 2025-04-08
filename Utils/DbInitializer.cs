@@ -13,15 +13,22 @@ namespace CareLink_Refugee.Utils
             DataGenerator.GenerateMockData();
 
             context.Shelters.AddRange(DataGenerator.Shelters);
-            context.SaveChangesAsync();
+            context.SaveChangesAsync().Wait();
+            context.Families.AddRange(DataGenerator.Families);
+            context.SaveChangesAsync().Wait();
 
             foreach (var refugee in DataGenerator.Refugees)
             {
-                refugee.AccomodationId = refugee.Accomodation.Id;
+                var family = context.Families.FirstOrDefault(f => f.Id == refugee.FamilyId);
+                if (family != null)
+                {
+                    refugee.FamilyId = family.Id;
+                    refugee.AccomodationId = refugee.Accomodation.Id;
+                }
             }
-
             context.Refugees.AddRange(DataGenerator.Refugees);
-            context.SaveChanges();
+            context.SaveChangesAsync().Wait();
+            
         }
     }
 }

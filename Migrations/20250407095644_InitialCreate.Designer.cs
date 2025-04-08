@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CareLink_Refugee.Migrations
 {
     [DbContext(typeof(RefugeeDbContext))]
-    [Migration("20250407060209_InitialCreate")]
+    [Migration("20250407095644_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,6 +24,21 @@ namespace CareLink_Refugee.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("CareLink_Refugee.Models.Family", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("FamilyName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Families");
+                });
 
             modelBuilder.Entity("CareLink_Refugee.Models.Refugee", b =>
                 {
@@ -43,8 +58,8 @@ namespace CareLink_Refugee.Migrations
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("FamilyId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("FamilyId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -80,6 +95,8 @@ namespace CareLink_Refugee.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AccomodationId");
+
+                    b.HasIndex("FamilyId");
 
                     b.ToTable("Refugees");
                 });
@@ -117,7 +134,20 @@ namespace CareLink_Refugee.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CareLink_Refugee.Models.Family", "Family")
+                        .WithMany("Members")
+                        .HasForeignKey("FamilyId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
+
                     b.Navigation("Accomodation");
+
+                    b.Navigation("Family");
+                });
+
+            modelBuilder.Entity("CareLink_Refugee.Models.Family", b =>
+                {
+                    b.Navigation("Members");
                 });
 
             modelBuilder.Entity("CareLink_Refugee.Models.Shelter", b =>
